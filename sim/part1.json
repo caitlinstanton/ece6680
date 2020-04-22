@@ -1,7 +1,7 @@
 {
 
  name: testpart,
- scale: 5,
+ scale: 1,
  table_friction: 10,
  part_friction: 0.1,
  density: 0.3,

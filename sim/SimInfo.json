@@ -1,9 +1,9 @@
 {
 
  name: SimInfo,
- robots:[{file: robot1.json,  count: 20},
+ robots:[{file: robot1.json,  count: 200},
          {file: robot2.json, count: 0}],
- parts: [{file: part1.json, count: 50},
-	 {file: part2.json, count: 20},
-         {file: part3.json, count: 20}]
+ parts: [{file: part1.json, count: 0},
+	 {file: part2.json, count:0},
+         {file: part3.json, count: 0}]
 }

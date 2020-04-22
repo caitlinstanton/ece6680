@@ -67,6 +67,26 @@ void readSimDef(String fname) {
        obj = loadJSONObject(fname); 
        
          try {
+          jar= obj.getJSONArray("parts");
+          partTypes = jar.size();
+          print("Found "  +  partTypes  +" different part types in " + fname + ":\n");
+  
+          // instantiate the part count array 
+          partCounts = new int[partTypes];
+          partFileNames = new String[partTypes];
+          
+          // loop through different robot parts
+              for(int i=0; i < partTypes; i++){
+                    jprt=jar.getJSONObject(i);
+                    partFileNames[i]=jprt.getString("file");
+                    partCounts[i]=jprt.getInt("count");
+                    print("    " + partCounts[i] + " times " + partFileNames[i] + "\n");
+            }
+         } catch(RuntimeException e) {
+            print("Couldn't read part array in simulation file.\n\n");
+         }
+       
+         try {
           jar= obj.getJSONArray("robots");
           robotTypes = jar.size();
           
@@ -89,26 +109,6 @@ void readSimDef(String fname) {
           } catch(RuntimeException e) {
           print("Couldn't read robot array in simulation file.\n\n");
         }
-       
-       try {
-          jar= obj.getJSONArray("parts");
-          partTypes = jar.size();
-          print("Found "  +  partTypes  +" different part types in " + fname + ":\n");
-  
-          // instantiate the part count array 
-          partCounts = new int[partTypes];
-          partFileNames = new String[partTypes];
-          
-          // loop through different robot parts
-              for(int i=0; i < partTypes; i++){
-                    jprt=jar.getJSONObject(i);
-                    partFileNames[i]=jprt.getString("file");
-                    partCounts[i]=jprt.getInt("count");
-                    print("    " + partCounts[i] + " times " + partFileNames[i] + "\n");
-            }
-       } catch(RuntimeException e) {
-          print("Couldn't read part array in simulation file.\n\n");
-       }
              
        
     }  catch(RuntimeException e) {
@@ -237,6 +237,7 @@ void draw() {
   
   //Apply forces / move robots 
   for (Robot r : robots) {
+    
     r.move();
    
    Vec2 pos = box2d.getBodyPixelCoord(r.body);
@@ -252,6 +253,7 @@ void draw() {
     }if (pos.y>(height-boundaryWidth)){
       r.applySoftBoundary(PI/2,100);  
     }   
+
  }
 
     //Draw all the boundaries, parts, and robots:
