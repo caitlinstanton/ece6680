@@ -56,9 +56,8 @@ Boolean globalCollison=false;
 
 //start button
 int rectX, rectY;      // Position of square button
-int rectSize = 30;     // Diameter of rect
-color rectColor;
-color rectHighlight;
+int rectSizeX = 100;     
+int rectSizeY = 30;
 boolean rectOver = false;
 boolean start = false;
 
@@ -135,10 +134,8 @@ void setup() {
   box2d.setGravity(0, 0);                     //Neglect gravity
 
   //start button
-  rectColor = color(0);
-  rectHighlight = color(51);
-  rectX = width/2-rectSize-10;
-  rectY = height/2-rectSize/2;
+  rectX = width-rectSizeX-10;
+  rectY = rectSizeY+10;
 
     // Turn on collision listening!
   box2d.listenForCollisions();
@@ -196,14 +193,15 @@ void draw() {
   //Advance time one step
   box2d.step();
   
-  if (rectOver) {
-    fill(rectHighlight);
-  } else {
-    fill(rectColor);
+  if (!start) {
+    fill(255);
+    stroke(0);
+    rect(rectX, rectY, rectSizeX, rectSizeY);
+    textAlign(CENTER, CENTER);
+    textSize(15);
+    fill(0);
+    text("START SIM", rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
   }
-  stroke(255);
-  rect(rectX, rectY, rectSize, rectSize);
-  
   
   //Create parts/robots:
   
@@ -297,9 +295,9 @@ void draw() {
     }
 
     //Write user guide: 
-    fill(255, 255, 255);
-    textSize(15);
-    text("Change direction of a robot by clicking on it.", 20, 20);
+    //fill(255, 255, 255);
+    //textSize(15);
+    //text("Change direction of a robot by clicking on it.", 20, 20);
  
     //Write screenshot to file, appends to old image sequences 
     if ( deltaTms < (System.currentTimeMillis()-lastTime)) {
