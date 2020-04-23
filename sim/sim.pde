@@ -54,6 +54,14 @@ long deltaTms=3000; // Time between logging and frame saving events
 
 Boolean globalCollison=false;
 
+//start button
+int rectX, rectY;      // Position of square button
+int rectSize = 30;     // Diameter of rect
+color rectColor;
+color rectHighlight;
+boolean rectOver = false;
+boolean start = false;
+
 /*****************************************************/
 /* Setup world                                       */
 /*****************************************************/
@@ -126,9 +134,15 @@ void setup() {
   box2d.createWorld();                        //Create world
   box2d.setGravity(0, 0);                     //Neglect gravity
 
+  //start button
+  rectColor = color(0);
+  rectHighlight = color(51);
+  rectX = width/2-rectSize-10;
+  rectY = height/2-rectSize/2;
+
     // Turn on collision listening!
   box2d.listenForCollisions();
-
+  
   readSimDef("SimInfo.json");
 
   //Create parts lists:
@@ -159,6 +173,9 @@ void setup() {
 /*************************************************************/
 
 void mousePressed () {
+  if (rectOver) {
+    start = true;
+  }
   for (Robot r : robots) {
     if (r.contains(mouseX, mouseY)) {
       float angle = r.body.getAngle()+PI/3 + random(PI*4/3);
@@ -173,10 +190,19 @@ void mousePressed () {
 
 void draw() {
 
+  update(mouseX,mouseY);
   background(70);
 
   //Advance time one step
   box2d.step();
+  
+  if (rectOver) {
+    fill(rectHighlight);
+  } else {
+    fill(rectColor);
+  }
+  stroke(255);
+  rect(rectX, rectY, rectSize, rectSize);
   
   
   //Create parts/robots:
@@ -235,6 +261,7 @@ void draw() {
     }
   }
   
+  if (start) {
   //Apply forces / move robots 
   for (Robot r : robots) {
     
@@ -255,6 +282,7 @@ void draw() {
     }   
 
  }
+  }
 
     //Draw all the boundaries, parts, and robots:
     for (Boundary wall : boundaries) {
@@ -308,6 +336,15 @@ void draw() {
         
       }// end log entry
    }// end log / image save timer
+}
+
+void update(int x, int y) {
+  if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    rectOver = true;
+  } else {
+    rectOver = false;
+  }
 }
 
 // Collision event functions!
