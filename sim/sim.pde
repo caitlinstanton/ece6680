@@ -62,7 +62,7 @@ boolean rectOver = false;
 boolean start = false;
 
 //statistics
-int displayedParts = 0;
+boolean[] displayedParts;
 
 /*****************************************************/
 /* Setup world                                       */
@@ -85,12 +85,18 @@ void readSimDef(String fname) {
       partCounts = new int[partTypes];
       partFileNames = new String[partTypes];
 
+      int totalParts = 0;
       // loop through different robot parts
       for (int i=0; i < partTypes; i++) {
         jprt=jar.getJSONObject(i);
         partFileNames[i]=jprt.getString("file");
         partCounts[i]=jprt.getInt("count");
         print("    " + partCounts[i] + " times " + partFileNames[i] + "\n");
+        totalParts = totalParts + partCounts[i];
+      }
+      displayedParts = new boolean[totalParts];
+      for (int i = 0; i < totalParts; i++) {
+        displayedParts[i] = true;
       }
     } 
     catch(RuntimeException e) {
@@ -107,7 +113,7 @@ void readSimDef(String fname) {
       robotTypes = jar.size();
       robotCounts = new int[robotTypes];
       robotFileNames = new String[robotTypes];
-
+  
       // loop through different robot parts
       for (int i=0; i < jar.size(); i++) {
         jprt=jar.getJSONObject(i);
@@ -208,11 +214,10 @@ void draw() {
     textAlign(CENTER, CENTER);
     textSize(15);
     fill(0);
-    text(displayedParts, rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
+    text(numParts(), rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
   }
 
   //Create parts/robots:
-
   robotsDone=true;
   for (int i=0; i<robotTypes; i++) {
     // print("type=" + i + "   counts=" + robotCounts[i] + "\n");
@@ -251,8 +256,8 @@ void draw() {
       print("Jump for overlap.\n");
     }
   }
-  
-  
+
+
 
   for (Part p : robots) {
     if (p.inCollision && !p.placed) {
@@ -268,7 +273,7 @@ void draw() {
       }
     }
   }
-  
+
   if (start) {
     //Apply forces / move robots 
     for (Robot r : robots) {
@@ -300,9 +305,12 @@ void draw() {
 
   for (Part p : parts) {
     Vec2 pos = box2d.getBodyPixelCoord(p.body);
-
+    int index = parts.indexOf(p);
     if (!( (pos.x<boundaryWidth) || (pos.x>(width-boundaryWidth)) || (pos.y<boundaryWidth) || (pos.y>(height-boundaryWidth)) )) {
       p.display();
+      displayedParts[index] = true;
+    } else {
+      displayedParts[index] = false;
     }
   }
   for (Robot r : robots) {
@@ -380,4 +388,12 @@ void beginContact(Contact cp) {
 
 // Objects stop touching each other
 void endContact(Contact cp) {
+}
+
+int numParts() {
+  int tmp = 0;
+  for (int i = 0; i < displayedParts.length;i++) {
+    if (displayedParts[i]) tmp++;
+  }
+  return tmp;
 }
