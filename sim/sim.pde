@@ -208,7 +208,7 @@ void draw() {
     textAlign(CENTER, CENTER);
     textSize(15);
     fill(0);
-    text(parts.size(), rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
+    text(displayedParts, rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
   }
 
   //Create parts/robots:
@@ -251,6 +251,8 @@ void draw() {
       print("Jump for overlap.\n");
     }
   }
+  
+  
 
   for (Part p : robots) {
     if (p.inCollision && !p.placed) {
@@ -266,7 +268,7 @@ void draw() {
       }
     }
   }
-
+  
   if (start) {
     //Apply forces / move robots 
     for (Robot r : robots) {
@@ -301,8 +303,6 @@ void draw() {
 
     if (!( (pos.x<boundaryWidth) || (pos.x>(width-boundaryWidth)) || (pos.y<boundaryWidth) || (pos.y>(height-boundaryWidth)) )) {
       p.display();
-    } else {
-      parts.remove(p); 
     }
   }
   for (Robot r : robots) {
