@@ -148,10 +148,14 @@ void setup() {
   robots = new ArrayList<Robot>();
 
   //Create boundaries
-  boundaries.add(new Boundary(width-5, height/2, 10, height));
-  boundaries.add(new Boundary(5, height/2, 10, height));  
-  boundaries.add(new Boundary(width/2, 5, width-20, 10));
-  boundaries.add(new Boundary(width/2, height-5, width-20, 10));
+  //boundaries.add(new Boundary(width-5, height/2, 10, height));
+  //boundaries.add(new Boundary(5, height/2, 10, height));  
+  //boundaries.add(new Boundary(width/2, 5, width-20, 10));
+  //boundaries.add(new Boundary(width/2, height-5, width-20, 10));
+  boundaries.add(new Boundary(0, 20, 1, 1));
+  boundaries.add(new Boundary(0, 0, 1, 1));  
+  boundaries.add(new Boundary(20, 0, 1, 1));
+  boundaries.add(new Boundary(20, 20, 1, 1));
 
 //  bg = loadImage("background.jpg");
 //  bg.resize(width, height);
@@ -337,8 +341,8 @@ void draw() {
 }
 
 void update(int x, int y) {
-  if (mouseX >= x && mouseX <= x+width && 
-      mouseY >= y && mouseY <= y+height) {
+  if (mouseX >= rectX && mouseX <= rectX+width && 
+      mouseY >= rectY && mouseY <= rectY+height) {
     rectOver = true;
   } else {
     rectOver = false;
