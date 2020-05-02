@@ -215,6 +215,11 @@ void draw() {
     textSize(15);
     fill(0);
     text(numParts(), rectX+(rectSizeX/2)-50, rectY+(rectSizeY/2)-20);
+    rect(rectX, rectY + rectSizeY + 10, rectSizeX, rectSizeY);
+    textAlign(CENTER,CENTER);
+    textSize(15);
+    fill(255,255,255);
+    text(0.001*(System.currentTimeMillis() - startTime), rectX+(rectSizeX/2)-50, rectY + rectSizeY + 10 +(rectSizeY/2)-20);
   }
 
   //Create parts/robots:

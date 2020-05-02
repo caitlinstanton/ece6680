@@ -5,7 +5,16 @@
          {file: robot2.json, count: 0},
          {file: robot3.json, count: 0},
      	 {file: robot4.json, count: 0}],
- parts: [{file: part1.json, count: 100},
-	 	 {file: part2.json, count: 0},
-         {file: part3.json, count: 0}]
+ parts: [{file: sand_part1.json, count: 30},
+	     {file: sand_part2.json, count: 30},
+         {file: sand_part3.json, count: 30},
+         {file: pebble_part1.json, count: 30},
+         {file: pebble_part2.json, count: 30},
+         {file: pebble_part3.json, count: 30},
+         {file: rock_part1.json, count: 3},
+         {file: rock_part2.json, count: 3},
+         {file: rock_part3.json, count: 3},
+         {file: boulder_part1.json, count: 1},
+         {file: boulder_part2.json, count: 1},
+         {file: boulder_part3.json, count: 1}]
 }
