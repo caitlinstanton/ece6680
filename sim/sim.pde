@@ -12,6 +12,7 @@ import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 import org.jbox2d.dynamics.contacts.*;
+import java.time.Instant;
 
 Box2DProcessing box2d;            //A reference to our box2d world
 
@@ -50,7 +51,7 @@ boolean printHeader;
 //timer
 long startTime;
 long lastTime;
-long deltaTms=3000; // Time between logging and frame saving events
+long deltaTms=30000; // Time between logging and frame saving events
 
 Boolean globalCollison=false;
 
@@ -167,12 +168,13 @@ void setup() {
   //  bg.resize(width, height);
 
   // file name and inital logging related variables
-  logfile=createWriter(logname + "_" + round(random(0, 10000)) + ".log");
+  logfile=createWriter(logname + "_" + Instant.now() + ".log");
   printHeader=true;
 
   lastTime=System.currentTimeMillis();
   startTime=lastTime;
   setupStatus = true;
+  logfile.print("time.s   ,   parts displayed\n");
 }
 
 /*************************************************************/
@@ -335,7 +337,6 @@ void draw() {
   if ( deltaTms < (System.currentTimeMillis()-lastTime)) {
 
     lastTime=System.currentTimeMillis();
-    print("Logging at "+ ( System.currentTimeMillis()-startTime) + "ms\n");
 
     fill(0);
     saveFrame("movie/line-######.png"); 
@@ -343,23 +344,8 @@ void draw() {
     //log stuff
     if (partsDone && robotsDone) {
 
-      if (printHeader) {
-        printHeader=false;
-        logfile.print("time.ms");
-      } else {
-        logfile.print(( System.currentTimeMillis()-startTime));
-      }
+      logfile.print(( System.currentTimeMillis()-elapsed)/1000 + "  ,  " + numParts());
 
-      // Display all the parts
-      for (Part p : parts) {
-        p.logpose(logfile);
-      } 
-
-      // Display all the parts
-      for (Robot r : robots) {
-        r.logpose(logfile);
-        //             r.jumpRandom(width, height);
-      } 
 
       logfile.print("\n");
       logfile.flush();
