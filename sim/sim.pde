@@ -64,6 +64,9 @@ boolean start = false;
 //statistics
 boolean[] displayedParts;
 
+//simulation length
+long elapsed = 0;
+boolean setupStatus = false;
 /*****************************************************/
 /* Setup world                                       */
 /*****************************************************/
@@ -169,23 +172,21 @@ void setup() {
 
   lastTime=System.currentTimeMillis();
   startTime=lastTime;
+  setupStatus = true;
 }
 
 /*************************************************************/
 /* Interrupt: click on a robot to make it change direction   */
 /*************************************************************/
 
-void mousePressed () {
-  if (rectOver) {
-    start = true;
-  }
-  for (Robot r : robots) {
-    if (r.contains(mouseX, mouseY)) {
-      float angle = r.body.getAngle()+PI/3 + random(PI*4/3);
-      r.body.setTransform(r.body.getWorldCenter(), angle);
-    }
-  }
-}
+//void mousePressed () {
+//  for (Robot r : robots) {
+//    if (r.contains(mouseX, mouseY)) {
+//      float angle = r.body.getAngle()+PI/3 + random(PI*4/3);
+//      r.body.setTransform(r.body.getWorldCenter(), angle);
+//    }
+//  }
+//}
 
 /*************************************************************/
 /* Draw, called for every time step                          */
@@ -193,7 +194,7 @@ void mousePressed () {
 
 void draw() {
 
-  update(mouseX, mouseY);
+  update(mouseX,mouseY);
   background(70);
 
   //Advance time one step
@@ -210,6 +211,10 @@ void draw() {
   }
 
   if (start) {
+    if (System.currentTimeMillis() - elapsed > 300000) {
+     exit(); 
+    }
+  
     rect(rectX, rectY, rectSizeX, rectSizeY);
     textAlign(CENTER, CENTER);
     textSize(15);
@@ -219,7 +224,7 @@ void draw() {
     textAlign(CENTER,CENTER);
     textSize(15);
     fill(255,255,255);
-    text(0.001*(System.currentTimeMillis() - startTime), rectX+(rectSizeX/2)-50, rectY + rectSizeY + 10 +(rectSizeY/2)-20);
+    text(0.001*(System.currentTimeMillis() - elapsed), rectX+(rectSizeX/2)-50, rectY + rectSizeY + 10 +(rectSizeY/2)-20);
   }
 
   //Create parts/robots:
@@ -258,7 +263,6 @@ void draw() {
     } else {
       p.placed=true;
       p.inCollision=false;
-      print("Jump for overlap.\n");
     }
   }
 
@@ -363,12 +367,28 @@ void draw() {
   }// end log / image save timer
 }
 
+boolean overRect(int x, int y, int width, int height)  {
+  if (mouseX >= x && mouseX <= x+width && 
+      mouseY >= y && mouseY <= y+height) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void update(int x, int y) {
-  if (mouseX >= rectX && mouseX <= rectX+width && 
-    mouseY >= rectY && mouseY <= rectY+height) {
+  if ( overRect(rectX, rectY, rectSizeX, rectSizeY) ) {
     rectOver = true;
   } else {
     rectOver = false;
+  }
+}
+
+void mousePressed() {
+  if (rectOver && setupStatus) {
+    start=true;
+    elapsed = System.currentTimeMillis();
+    print(elapsed);
   }
 }
 
