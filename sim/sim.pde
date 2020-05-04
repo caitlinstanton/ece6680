@@ -1,4 +1,4 @@
-/*****************************************************************************/ //<>// //<>// //<>// //<>//
+ /*****************************************************************************/ //<>// //<>// //<>// //<>//
 /* Original: The Nature of Code <http://www.shiffman.net/teaching/nature>    */
 /*           Spring 2011, Box2DProcessing example                            */
 /* Edited:   Spring 2016 by Nils Napp, Petra Jennings, and Kirstin Petersen  */
@@ -168,7 +168,7 @@ void setup() {
   //  bg.resize(width, height);
 
   // file name and inital logging related variables
-  logfile=createWriter(logname + "_" + Instant.now() + ".log");
+  logfile=createWriter(logname + "_" + System.currentTimeMillis() + ".log");
   printHeader=true;
 
   lastTime=System.currentTimeMillis();
@@ -213,7 +213,7 @@ void draw() {
   }
 
   if (start) {
-    if (System.currentTimeMillis() - elapsed > 300000) {
+    if (System.currentTimeMillis() - elapsed > 305000) {
      exit(); 
     }
   
